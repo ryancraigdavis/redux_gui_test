@@ -1,4 +1,4 @@
-import { NOT_FOUND, unknownProblem } from "./messages.js";
+
 import { describeProblem, listProblems } from "./problems.js";
 
 const PROBLEM_PATH = /^\/problems\/([A-Z0-9]+)$/;
