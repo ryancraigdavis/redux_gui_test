@@ -1,0 +1,11 @@
+# Redux Build System pipeline config. See github.com/ReduxISU/Redux_Build_System.
+engine = "npm"
+
+[artifact]
+image = "ghcr.io/ryancraigdavis/redux_gui_test"
+port = 3000
+health-path = "/health"
+
+# `integration-test` and `push` are not implemented in rbs yet; both report `skipped`.
+[push]
+on-branch = "main"

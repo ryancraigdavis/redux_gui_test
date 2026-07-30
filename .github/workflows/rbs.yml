@@ -1,0 +1,27 @@
+# Redux Build System pipeline. All logic lives in rbs
+# (github.com/ReduxISU/Redux_Build_System); this file only says "run it".
+#
+# Gates run inside this repo's own .devcontainer, so the toolchain is declared once in
+# devcontainer.json and used by humans and CI alike. What runs is decided by ./rbs.toml.
+#
+# Unlike Redux_GUI this runs WITHOUT `soft`, so a failing gate fails the check — which is what
+# lets a branch ruleset block the merge.
+name: rbs
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+  packages: write
+
+concurrency:
+  group: rbs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    uses: ReduxISU/Redux_Build_System/.github/workflows/ci.yml@main
+    secrets: inherit

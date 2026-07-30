@@ -1,0 +1,23 @@
+{
+  "name": "redux-gui-test",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Minimal service used to demonstrate the Redux Build System pipeline.",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "biome check --write .",
+    "format:check": "biome check ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.6",
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0"
+  }
+}
