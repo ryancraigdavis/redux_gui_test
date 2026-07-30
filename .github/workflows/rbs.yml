@@ -9,8 +9,9 @@
 name: rbs
 
 on:
-  push:
   pull_request:
+  push:
+    branches: [main]
 
 permissions:
   contents: read
