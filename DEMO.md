@@ -11,12 +11,20 @@ workflow ran and passed on `main`.
 **2. Create the branch ruleset.** Settings → Rules → Rulesets → New branch ruleset:
 
 - Target branch: `main`
-- ✅ **Require status checks to pass** → add **`build-test`**
-- ✅ Require a pull request before merging
+- Enforcement status: **Active** (a ruleset left in "Evaluate" mode reports but never blocks)
+- ✅ **Require a pull request before merging**
+- ✅ **Require status checks to pass** → add **`build-test / ci`**
 - ✅ Block force pushes
 
-> The check only appears in the picker once GitHub has seen it, which is why step 1 comes first.
-> `build-test` is the job name in `.github/workflows/rbs.yml`.
+> **The check is `build-test / ci`, not `build-test`.** When a job calls a reusable workflow,
+> GitHub names the check run `{caller job} / {called job}` — here the caller job in
+> `.github/workflows/rbs.yml` and the `ci` job inside the hub's `ci.yml`.
+>
+> Don't type it. Run step 1 first, then **pick it from the dropdown** — that is correct by
+> construction, and it is why `main` needs a green run before you build the ruleset.
+
+> Leave "Require branches to be up to date before merging" **off**. It forces a rebase and a
+> second 4-minute run between your fix and the merge, which is dead air on stage.
 
 **3. Confirm `soft` is off.** This repo's workflow calls the hub workflow with no `with:` block,
 so gates fail the check. If it ever gets `soft: true`, the job goes green regardless and the
@@ -83,6 +91,8 @@ stopping at the first failure.
 | Symptom | Cause |
 |---|---|
 | Check never appears | `rbs.yml` must exist **on the branch you pushed** — GitHub reads the workflow from that ref |
+| PR blocked forever on "Expected — waiting for status" | The required check name does not match what actually reports. Compare against the checks list on a real run |
+| Ruleset does not block | Enforcement left on "Evaluate" instead of "Active", or you have bypass permission as repo owner |
 | Job green despite failures | `soft: true` got added to the `with:` block |
 | Report comment missing | Push events have no PR number; the comment only posts on `pull_request`. The job summary always renders |
 | Workflow reference invalid | The hub's `ci.yml` must be on `ReduxISU/Redux_Build_System@main` |
